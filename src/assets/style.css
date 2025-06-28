@@ -1,0 +1,163 @@
+/* =================================================================
+   NEXVIBE ADMIN - CUSTOM STYLESHEET
+   ================================================================= */
+
+/* --- Cài đặt Chung & Font --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    /* Một màu nền sáng hơn, dịu mắt hơn */
+    background-color: #f8f9fa; 
+    color: #495057;
+}
+
+.wrapper {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+}
+
+
+/* --- Sidebar (Thanh Menu Trái) --- */
+#sidebar {
+    width: 280px;
+    min-width: 280px;
+    /* Màu xanh đen chuyên nghiệp, đồng nhất */
+    background-color: #0c2444; 
+    color: #adb5bd; /* Màu chữ hơi xám để dễ đọc hơn */
+    transition: all .3s;
+}
+
+.sidebar-header {
+    padding: 20px;
+    text-align: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Đường kẻ mờ phân tách */
+}
+
+.sidebar-header img {
+    max-width: 240px; /* Giới hạn kích thước logo cho cân đối */
+    height: auto;
+}
+
+/* Các mục trong Menu */
+.nav-item .nav-link {
+    padding: 14px 25px; /* Tăng padding cho thoáng */
+    font-size: 0.95rem; /* Giảm font size một chút */
+    color: #ced4da; /* Màu chữ mặc định */
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-left: 4px solid transparent;
+    transition: all .2s ease-in-out;
+    text-decoration: none;
+}
+
+.nav-item .nav-link i.fa-fw {
+    width: 20px;
+    text-align: center;
+    color: #8f9ca9; /* Màu icon mặc định */
+    transition: color .2s ease-in-out;
+}
+
+/* Hiệu ứng khi rê chuột vào mục menu */
+.nav-item .nav-link:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+    border-left: 4px solid #38bdf8;
+}
+.nav-item .nav-link:hover i.fa-fw {
+    color: #38bdf8;
+}
+
+/* Style cho mục menu đang được chọn (active)
+   Phần này được xử lý bởi class 'router-link-exact-active' trong component Sidebar.vue
+   Nếu bạn muốn ghi đè ở đây, hãy dùng:
+   .nav-link.router-link-exact-active { ... }
+*/
+
+
+/* --- Main Content (Nội dung chính bên phải) --- */
+#content {
+    flex-grow: 1;
+    padding: 2.5rem; /* Tăng padding cho thoáng đãng */
+}
+
+/* Style chung cho Card */
+.card {
+    border: 1px solid #e9ecef; /* Đường viền mờ, sạch sẽ */
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.05); /* Đổ bóng nhẹ nhàng */
+    border-radius: 0.5rem; /* Bo góc nhiều hơn */
+}
+
+.card-header {
+    background-color: #fff;
+    border-bottom: 1px solid #e9ecef;
+    padding: 1rem 1.5rem;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+/* Style cho Bảng dữ liệu */
+.table {
+    --bs-table-bg: transparent;
+    --bs-table-border-color: #e9ecef; /* Đồng bộ màu viền */
+}
+
+.table thead th {
+    font-weight: 600;
+    color: #6c757d;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.5px;
+    background-color: #f8f9fa;
+    border-bottom-width: 2px;
+}
+
+.table tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+.table td, .table th {
+    vertical-align: middle;
+}
+
+.table img.product-thumbnail {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+/* --- Style cho các Badge Trạng thái --- */
+.badge {
+    padding: 0.5em 0.9em;
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.badge.bg-success {
+    background-color: #d1fae5 !important;
+    color: #065f46 !important;
+}
+.badge.bg-warning {
+    background-color: #fef3c7 !important;
+    color: #92400e !important;
+}
+.badge.bg-danger {
+    background-color: #fee2e2 !important;
+    color: #991b1b !important;
+}
+.badge.bg-info {
+    background-color: #dbeafe !important;
+    color: #1e40af !important;
+}
+.badge.bg-primary {
+    background-color: #c7d2fe !important;
+    color: #4338ca !important;
+}
+.badge.bg-secondary {
+    background-color: #e5e7eb !important;
+    color: #374151 !important;
+}
