@@ -38,6 +38,8 @@ body {
     height: auto;
 }
 
+
+
 /* Các mục trong Menu */
 .nav-item .nav-link {
     padding: 14px 25px; /* Tăng padding cho thoáng */
@@ -66,6 +68,10 @@ body {
 }
 .nav-item .nav-link:hover i.fa-fw {
     color: #38bdf8;
+}
+
+.link-light:hover{
+    color: #38bdf8 !important;
 }
 
 /* Style cho mục menu đang được chọn (active)
@@ -160,4 +166,93 @@ body {
 .badge.bg-secondary {
     background-color: #e5e7eb !important;
     color: #374151 !important;
+}
+/* Style cho menu con */
+.sidebar-submenu {
+    background-color: rgba(0, 0, 0, 0.2); /* Nền tối hơn một chút */
+    padding-left: 15px; /* Thụt vào so với menu cha */
+}
+
+.sidebar-submenu .nav-link {
+    font-size: 0.9rem; /* Chữ nhỏ hơn menu cha */
+    padding-left: 2.5rem; /* Căn lề cho chữ */
+}
+
+/* Thêm mũi tên chỉ xuống cho menu cha */
+.nav-link[data-bs-toggle="collapse"]::after {
+    content: '\f078'; /* Icon mũi tên xuống của Font Awesome */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    margin-left: auto; /* Đẩy mũi tên về bên phải */
+    transition: transform 0.3s;
+}
+
+/* Xoay mũi tên khi menu được mở */
+.nav-link[data-bs-toggle="collapse"]:not(.collapsed)::after {
+    transform: rotate(180deg);
+}
+
+/* Style cho submenu item khi được active */
+.sidebar-submenu .nav-link.router-link-exact-active {
+    color: #fff;
+    font-weight: bold;
+}
+
+/* Giữ cho menu cha active khi một trong các con của nó active */
+.nav-item:has(.router-link-exact-active) > .nav-link[data-bs-toggle="collapse"] {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+
+.main-header .navbar {
+    padding: 0.5rem 0;
+}
+.main-header .navbar-brand {
+    padding: 0;
+}
+.main-header .nav-link {
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--bs-light);
+    padding: 1rem 1.25rem !important;
+    letter-spacing: 0.5px;
+    font-size: 0.9rem;
+}
+
+
+/* Ô tìm kiếm */
+.search-box {
+    position: relative;
+}
+.search-box .form-control {
+    border-radius: 50px;
+    padding-left: 1.25rem;
+    padding-right: 2.5rem; /* Dành chỗ cho icon */
+    background-color: #f3f4f6;
+    border: none;
+    width: 250px;
+}
+.search-box .search-icon {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    color: #000000;
+}
+
+/* Icon túi hàng và tài khoản */
+.main-header .fa-user, .main-header .fa-shopping-bag {
+    color: var(--bs-light);
+}
+
+.main-header .navbar-toggler {
+    border: none;
+}
+.main-header .navbar-toggler:focus {
+    box-shadow: none;
+}
+.main-header{
+    background-color: #0c2444;
+    
 }
