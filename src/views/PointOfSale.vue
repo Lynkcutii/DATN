@@ -26,6 +26,7 @@
               </div>
             </a>
             <div v-if="filteredProducts.length === 0" class="text-center p-5">
+                Không tìm thấy sản phẩm.
             </div>
           </div>
         </div>
