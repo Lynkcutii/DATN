@@ -1,0 +1,23 @@
+package com.example.datnspct.dto.Request;
+
+import com.example.datnspct.dto.TaiKhoanDTO;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class KhachHangCreateRequest {
+
+    private String maKH;
+    private String tenKH;
+    private String gioiTinh;
+    private String sdt;
+    private String diaChi;
+    private Boolean trangThai;
+}
+
