@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Entity
 @Table(name = "SanPhamCT")
@@ -24,20 +25,25 @@ public class SanPhamChiTiet {
     @Column(name = "MaSPCT", length = 50)
     private String maSPCT;
 
-    @Column(name = "IdSP")
-    private Integer idSP;
+    @ManyToOne
+    @JoinColumn(name = "IdSP")
+    private SanPham sanPham;
 
-    @Column(name = "IdChatLieu")
-    private Integer idChatLieu;
+    @ManyToOne
+    @JoinColumn(name = "IdChatLieu")
+    private ChatLieu chatLieu;
 
-    @Column(name = "IdThuongHieu")
-    private Integer idThuongHieu;
+    @ManyToOne
+    @JoinColumn(name = "IdThuongHieu")
+    private ThuongHieu thuongHieu;
 
-    @Column(name = "IdSize")
-    private Integer idSize;
+    @ManyToOne
+    @JoinColumn(name = "IdSize")
+    private Size size;
 
-    @Column(name = "IdMauSac")
-    private Integer idMauSac;
+    @ManyToOne
+    @JoinColumn(name = "IdMauSac")
+    private MauSac mauSac;
 
     @Column(name = "SoLuong")
     private Integer soLuong;
@@ -50,6 +56,9 @@ public class SanPhamChiTiet {
 
     @Column(name = "TrangThai")
     private Boolean trangThai;
+
+    @OneToMany(mappedBy = "sanPhamChiTiet")
+    private List<Img> images;
 
 
 }

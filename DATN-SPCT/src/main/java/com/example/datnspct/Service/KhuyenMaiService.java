@@ -18,12 +18,17 @@ public class KhuyenMaiService {
     private KhuyenMaiDTO toDTO(KhuyenMai entity) {
         KhuyenMaiDTO dto = new KhuyenMaiDTO();
         dto.setIdKM(entity.getIdKM());
-        dto.setMaKM(entity.getMaKM());
-        dto.setTenKM(entity.getTenKM());
+        dto.setMaVoucher(entity.getMaVoucher());
+        dto.setTenVoucher(entity.getTenVoucher());
+        dto.setHinhThucGiam(entity.getHinhThucGiam());
+        dto.setMucGiam(entity.getMucGiam());
+        dto.setGiaTriDonHangToiThieu(entity.getGiaTriDonHangToiThieu());
+        dto.setSoLuong(entity.getSoLuong());
+        dto.setDaSuDung(entity.getDaSuDung());
         dto.setNgayBatDau(entity.getNgayBatDau());
         dto.setNgayKetThuc(entity.getNgayKetThuc());
-        dto.setSoLuong(entity.getSoLuong());
         dto.setTrangThai(entity.getTrangThai());
+        dto.setIdNV(entity.getIdNV());
         return dto;
     }
 
@@ -31,12 +36,17 @@ public class KhuyenMaiService {
     private KhuyenMai toEntity(KhuyenMaiDTO dto) {
         KhuyenMai entity = new KhuyenMai();
         entity.setIdKM(dto.getIdKM());
-        entity.setMaKM(dto.getMaKM());
-        entity.setTenKM(dto.getTenKM());
+        entity.setMaVoucher(dto.getMaVoucher());
+        entity.setTenVoucher(dto.getTenVoucher());
+        entity.setHinhThucGiam(dto.getHinhThucGiam());
+        entity.setMucGiam(dto.getMucGiam());
+        entity.setGiaTriDonHangToiThieu(dto.getGiaTriDonHangToiThieu());
+        entity.setSoLuong(dto.getSoLuong());
+        entity.setDaSuDung(dto.getDaSuDung());
         entity.setNgayBatDau(dto.getNgayBatDau());
         entity.setNgayKetThuc(dto.getNgayKetThuc());
-        entity.setSoLuong(dto.getSoLuong());
         entity.setTrangThai(dto.getTrangThai());
+        entity.setIdNV(dto.getIdNV());
         return entity;
     }
 
@@ -63,12 +73,17 @@ public class KhuyenMaiService {
     public KhuyenMaiDTO update(Integer id, KhuyenMaiDTO dto) {
         KhuyenMai entity = khuyenMaiRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy khuyến mãi"));
-        entity.setMaKM(dto.getMaKM());
-        entity.setTenKM(dto.getTenKM());
+        entity.setMaVoucher(dto.getMaVoucher());
+        entity.setTenVoucher(dto.getTenVoucher());
+        entity.setHinhThucGiam(dto.getHinhThucGiam());
+        entity.setMucGiam(dto.getMucGiam());
+        entity.setGiaTriDonHangToiThieu(dto.getGiaTriDonHangToiThieu());
+        entity.setSoLuong(dto.getSoLuong());
+        entity.setDaSuDung(dto.getDaSuDung());
         entity.setNgayBatDau(dto.getNgayBatDau());
         entity.setNgayKetThuc(dto.getNgayKetThuc());
-        entity.setSoLuong(dto.getSoLuong());
         entity.setTrangThai(dto.getTrangThai());
+        entity.setIdNV(dto.getIdNV());
         KhuyenMai updated = khuyenMaiRepository.save(entity);
         return toDTO(updated);
     }

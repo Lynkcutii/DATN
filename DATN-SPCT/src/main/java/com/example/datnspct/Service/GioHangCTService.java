@@ -27,7 +27,7 @@ public class GioHangCTService {
         GioHangCTDTO dto = new GioHangCTDTO();
         dto.setIdGHCT(entity.getIdGHCT());
         dto.setIdGH(entity.getGioHang() != null ? entity.getGioHang().getIdGH() : null);
-        dto.setIdSPCT(entity.getSanPhamChiTiet() != null ? entity.getSanPhamChiTiet().getIdSPCT() : null);
+        dto.setIdSPCT(entity.getSanPhamChiTiet() != null ? Integer.valueOf(entity.getSanPhamChiTiet().getMaSPCT()) : null);
         dto.setSoLuong(entity.getSoLuong());
         dto.setDonGia(entity.getDonGia());
         return dto;

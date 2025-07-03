@@ -22,7 +22,7 @@ public class ImgService {
     private ImgDTO toDTO(Img entity) {
         ImgDTO dto = new ImgDTO();
         dto.setIdImg(entity.getIdImg());
-        dto.setIdSPCT(entity.getSanPhamChiTiet() != null ? entity.getSanPhamChiTiet().getIdSPCT() : null);
+        dto.setIdSPCT(entity.getSanPhamChiTiet() != null ? Integer.valueOf(entity.getSanPhamChiTiet().getMaSPCT()) : null);
         dto.setLink(entity.getLink());
         dto.setName(entity.getName());
         dto.setSize(entity.getSize());

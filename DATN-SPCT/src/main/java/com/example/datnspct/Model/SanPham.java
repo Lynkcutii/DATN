@@ -28,4 +28,8 @@ public class SanPham {
     @Column(name = "TrangThai")
     private Boolean trangThai;
 
+    @ManyToOne
+    @JoinColumn(name = "IdDM")
+    private DanhMuc danhMuc;
+
 }

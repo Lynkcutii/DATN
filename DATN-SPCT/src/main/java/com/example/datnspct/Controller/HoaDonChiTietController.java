@@ -23,30 +23,30 @@ public class HoaDonChiTietController {
     }
 
 //    // Lấy theo ID
-//    @GetMapping("/{id}")
-//    public ResponseEntity<HoaDonChiTietDTO> layHoaDonChiTietTheoId(@PathVariable Integer id) {
-//        HoaDonChiTietDTO hoaDonChiTietDTO = hoaDonChiTietService.layHoaDonChiTietTheoId(id);
-//        return ResponseEntity.ok(hoaDonChiTietDTO);
-//    }
-//
-//    // Lấy tất cả
-//    @GetMapping
-//    public ResponseEntity<List<HoaDonChiTietDTO>> layTatCaHoaDonChiTiet() {
-//        List<HoaDonChiTietDTO> hoaDonChiTietDTOs = hoaDonChiTietService.layTatCaHoaDonChiTiet();
-//        return ResponseEntity.ok(hoaDonChiTietDTOs);
-//    }
-//
-//    // Cập nhật
-//    @PutMapping("/{id}")
-//    public ResponseEntity<HoaDonChiTietDTO> capNhatHoaDonChiTiet(@PathVariable Integer id, @RequestBody HoaDonChiTietDTO hoaDonChiTietDTO) {
-//        HoaDonChiTietDTO hoaDonChiTietDaCapNhat = hoaDonChiTietService.capNhatHoaDonChiTiet(id, hoaDonChiTietDTO);
-//        return ResponseEntity.ok(hoaDonChiTietDaCapNhat);
-//    }
-//
-//    // Xóa
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<Void> xoaHoaDonChiTiet(@PathVariable Integer id) {
-//        hoaDonChiTietService.xoaHoaDonChiTiet(id);
-//        return ResponseEntity.noContent().build();
-//    }
+    @GetMapping("/{id}")
+    public ResponseEntity<HoaDonChiTietDTO> layHoaDonChiTietTheoId(@PathVariable Integer id) {
+        HoaDonChiTietDTO hoaDonChiTietDTO = hoaDonChiTietService.layHoaDonChiTietTheoId(id);
+        return ResponseEntity.ok(hoaDonChiTietDTO);
+    }
+
+    // Lấy tất cả
+    @GetMapping
+    public ResponseEntity<List<HoaDonChiTietDTO>> layTatCaHoaDonChiTiet() {
+        List<HoaDonChiTietDTO> hoaDonChiTietDTOs = hoaDonChiTietService.layTatCaHoaDonChiTiet();
+        return ResponseEntity.ok(hoaDonChiTietDTOs);
+    }
+
+    // Cập nhật
+    @PutMapping("/{id}")
+    public ResponseEntity<HoaDonChiTietDTO> capNhatHoaDonChiTiet(@PathVariable Integer id, @RequestBody HoaDonChiTietDTO hoaDonChiTietDTO) {
+        HoaDonChiTietDTO hoaDonChiTietDaCapNhat = hoaDonChiTietService.capNhatHoaDonChiTiet(id, hoaDonChiTietDTO);
+        return ResponseEntity.ok(hoaDonChiTietDaCapNhat);
+    }
+
+    // Xóa
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> xoaHoaDonChiTiet(@PathVariable Integer id) {
+        hoaDonChiTietService.xoaHoaDonChiTiet(id);
+        return ResponseEntity.noContent().build();
+    }
 }

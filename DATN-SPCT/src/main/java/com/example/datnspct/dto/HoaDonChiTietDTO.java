@@ -22,4 +22,6 @@ public class HoaDonChiTietDTO {
     private Boolean trangThai;
     private LocalDateTime ngayTao;
     private LocalDateTime ngaySua;
+    private String phuongThanhToan; // Lấy từ PhuongTT
+    private String tenSanPham; // Lấy từ SanPhamCT
 }
