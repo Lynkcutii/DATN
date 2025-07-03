@@ -144,14 +144,31 @@ INSERT INTO PhuongTT VALUES (N'Tiền mặt'), (N'Chuyển khoản'), (N'Momo');
 -- Khuyến mãi
 CREATE TABLE KhuyenMai (
     IdKM INT IDENTITY(1,1) PRIMARY KEY,
-    MaKM VARCHAR(50),
-    TenKM NVARCHAR(100),
-    NgayBatDau DATETIME,
-    NgayKetThuc DATETIME,
-    SoLuong INT,
-    TrangThai BIT
+    MaVoucher VARCHAR(50) UNIQUE NOT NULL, -- Mã code mà khách hàng sẽ nhập, nên là duy nhất và không được rỗng
+    TenVoucher NVARCHAR(255) NOT NULL, -- Tên hoặc mô tả ngắn của chương trình
+    
+    -- Các thuộc tính quan trọng của voucher
+    HinhThucGiam VARCHAR(20) NOT NULL, -- Ví dụ: 'percentage' (phần trăm) hoặc 'fixed' (số tiền cố định)
+    MucGiam DECIMAL(18, 2) NOT NULL, -- Giá trị giảm. Ví dụ: 10 (cho 10%) hoặc 50000 (cho 50,000đ)
+    GiaTriDonHangToiThieu DECIMAL(18, 2) DEFAULT 0, -- Giá trị đơn hàng tối thiểu để áp dụng voucher
+    
+    SoLuong INT NOT NULL, -- Tổng số lượng voucher có thể sử dụng
+    DaSuDung INT DEFAULT 0, -- Số lượng voucher đã được sử dụng
+    
+    -- Thời gian hiệu lực
+    NgayBatDau DATETIME NOT NULL,
+    NgayKetThuc DATETIME NOT NULL,
+    
+    -- Trạng thái và thông tin quản lý
+    TrangThai BIT DEFAULT 1, -- 1: Hoạt động, 0: Không hoạt động
+    IdNV INT -- ID của nhân viên tạo voucher (nên có khóa ngoại đến bảng NhanVien)
+    
+    -- Thêm constraint để kiểm tra HinhThucGiam
+    -- CHECK (HinhThucGiam IN ('percentage', 'fixed'))
 );
-INSERT INTO KhuyenMai VALUES ('KM01', N'Giảm 10%', '2025-06-01', '2025-06-30', 100, 1);
+GO
+INSERT INTO KhuyenMai (MaVoucher, TenVoucher, HinhThucGiam, MucGiam, GiaTriDonHangToiThieu, SoLuong, NgayBatDau, NgayKetThuc)
+VALUES ('SALE10', N'Giảm 10% cho tất cả sản phẩm', 'percentage', 10, 200000, 100, '2025-07-01 00:00:00', '2025-07-31 23:59:59');
 
 -- Hóa đơn
 CREATE TABLE HoaDon (

@@ -1,95 +1,96 @@
 <template>
-  <!-- Header -->
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Danh Sách Sản Phẩm</h1>
-    <!-- Nút "Thêm Sản Phẩm" giờ sẽ điều hướng đến trang tạo mới -->
-    <router-link :to="{ name: 'admin.products.create' }" class="btn btn-primary d-flex align-items-center gap-2">
-      <i class="fas fa-plus"></i> Thêm Sản Phẩm
-    </router-link>
-  </div>
-  
-  <!-- Filter Card -->
-  <div class="card mb-4">
-    <div class="card-body">
-      <h5 class="card-title mb-3">Bộ lọc</h5>
-      <!-- (Nội dung bộ lọc có thể thêm vào đây sau) -->
-    </div>
+    <h1 class="h3 mb-0">Quản lý Sản phẩm</h1>
+    <router-link :to="{ name: 'admin.products.create' }" class="btn btn-primary">
+    <i class="fas fa-plus me-2"></i>Thêm sản phẩm mới
+</router-link>
   </div>
 
-  <!-- Products Table Card -->
-  <div class="card">
+  <!-- Card Bộ lọc -->
+  <div class="card shadow-sm mb-4">
     <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <th>SKU</th>
-              <th>Hình Ảnh</th>
-              <th>Tên Sản Phẩm</th>
-              <th>Giá Bán</th>
-              <th>Tồn Kho</th>
-              <th>Trạng Thái</th>
-              <th>Hành Động</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dữ liệu mẫu, sau này bạn sẽ dùng v-for để lặp qua danh sách sản phẩm từ API -->
-            <tr>
-              <th>NV-T001</th>
-              <td><img src="https://i.imgur.com/3pWjC0a.png" class="product-thumbnail"></td>
-              <td>Áo Thun Thể Thao Co Dãn 4 Chiều</td>
-              <td>250.000</td>
-              <td>150</td>
-              <td><span class="badge rounded-pill text-bg-success">Còn hàng</span></td>
-              <td>
-                <!-- Nút Sửa, điều hướng đến trang chỉnh sửa với id sản phẩm -->
-                <router-link :to="{ name: 'admin.products.edit', params: { id: 1 } }" class="btn btn-link text-primary p-1" title="Sửa">
-                  <i class="fas fa-edit"></i>
-                </router-link>
-                <!-- Nút Xóa, sẽ trigger mở popup xác nhận -->
-                <button @click="openDeleteModal(1, 'Áo Thun Thể Thao Co Dãn 4 Chiều')" class="btn btn-link text-danger p-1" title="Xóa">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </td>
-            </tr>
-            <!-- Thêm một sản phẩm nữa để ví dụ -->
-             <tr>
-              <th>NV-H002</th>
-              <td><img src="https://i.imgur.com/fG0m92F.png" class="product-thumbnail"></td>
-              <td>Áo Hoodie Nỉ Bông Nexvibe Logo</td>
-              <td>550.000</td>
-              <td>8</td>
-              <td><span class="badge rounded-pill text-bg-warning">Sắp hết</span></td>
-              <td>
-                <router-link :to="{ name: 'admin.products.edit', params: { id: 2 } }" class="btn btn-link text-primary p-1" title="Sửa">
-                  <i class="fas fa-edit"></i>
-                </router-link>
-                <button @click="openDeleteModal(2, 'Áo Hoodie Nỉ Bông Nexvibe Logo')" class="btn btn-link text-danger p-1" title="Xóa">
-                  <i class="fas fa-trash-alt"></i>
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="row g-3 align-items-center">
+        <div class="col-md-5">
+          <el-input
+            v-model="searchQuery"
+            placeholder="Tìm kiếm theo tên hoặc mã sản phẩm..."
+            @input="debouncedSearch"
+            clearable
+          />
+        </div>
+        <div class="col-md-3">
+          <el-select v-model="filterStatus" placeholder="Lọc theo trạng thái" style="width: 100%;" @change="fetchProducts" clearable>
+            <el-option label="Tất cả" value=""></el-option>
+            <el-option label="Đang bán" :value="true"></el-option>
+            <el-option label="Ngừng bán" :value="false"></el-option>
+          </el-select>
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- Modal xác nhận xóa -->
-  <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="deleteModalLabel">Xác nhận Xóa</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          Bạn có chắc chắn muốn xóa sản phẩm "<strong>{{ productNameToDelete }}</strong>"?<br>
-          Hành động này không thể hoàn tác.
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
-          <button type="button" class="btn btn-danger" @click="confirmDelete">Xóa</button>
+  <!-- Bảng dữ liệu sản phẩm -->
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <div v-loading="loading">
+        <el-table :data="products" style="width: 100%" class="product-table">
+          <el-table-column label="Ảnh" width="100">
+            <template #default="scope">
+              <img :src="scope.row.anhDaiDien || 'https://via.placeholder.com/150'" class="product-thumbnail" alt="Ảnh sản phẩm">
+            </template>
+          </el-table-column>
+          
+          <el-table-column label="Tên sản phẩm">
+            <template #default="scope">
+              <div class="fw-bold">{{ scope.row.tenSP }}</div>
+              <small class="text-muted">Mã: {{ scope.row.maSP }}</small>
+            </template>
+          </el-table-column>
+          
+          <!-- SỬA LẠI CÁCH HIỂN THỊ DANH MỤC VÀ THƯƠNG HIỆU -->
+          <el-table-column label="Danh mục">
+            <template #default="scope">
+              {{ scope.row.danhMuc?.tenDM || 'N/A' }}
+            </template>
+          </el-table-column>
+          
+          <el-table-column label="Thương hiệu">
+            <template #default="scope">
+              {{ scope.row.IdThuongHieu?.tenThuongHieu || 'N/A' }}
+            </template>
+          </el-table-column>
+
+          <el-table-column label="Trạng thái" width="120">
+            <template #default="scope">
+              <el-tag :type="scope.row.trangThai ? 'success' : 'info'">
+                {{ scope.row.trangThai ? 'Đang bán' : 'Ngừng bán' }}
+              </el-tag>
+            </template>
+          </el-table-column>
+
+          <el-table-column label="Hành động" width="120" align="center">
+            <template #default="scope">
+              <!-- SỬA LẠI ID CHO ĐÚNG VỚI DB -->
+              <router-link :to="{ name: 'admin.products.edit', params: { id: scope.row.idSP } }" class="btn btn-link text-primary p-1" title="Sửa">
+                <i class="fas fa-edit"></i>
+              </router-link>
+              <button @click="confirmDelete(scope.row)" class="btn btn-link text-danger p-1" title="Xóa">
+                <i class="fas fa-trash-alt"></i>
+              </button>
+            </template>
+          </el-table-column>
+        </el-table>
+
+        <!-- Phân trang -->
+        <div class="d-flex justify-content-end mt-4">
+            <el-pagination
+                background
+                layout="prev, pager, next, total, jumper"
+                :current-page="page"
+                :page-size="pageSize"
+                :total="totalElements"
+                @current-change="handlePageChange"
+            />
         </div>
       </div>
     </div>
@@ -97,53 +98,77 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { Modal } from 'bootstrap';
+// PHẦN SCRIPT GIỮ NGUYÊN, KHÔNG CẦN THAY ĐỔI
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { ElMessage, ElMessageBox } from 'element-plus';
+import _ from 'lodash';
 
-// Biến để lưu trữ đối tượng Modal của Bootstrap
-let deleteModalInstance = null;
-// Biến để lưu trữ ID và tên của sản phẩm sắp bị xóa
-const productIdToDelete = ref(null);
-const productNameToDelete = ref('');
+const products = ref([]);
+const loading = ref(true);
+const searchQuery = ref('');
+const filterStatus = ref('');
+const page = ref(1);
+const pageSize = ref(10);
+const totalElements = ref(0);
 
-// Hàm này được gọi khi người dùng nhấn nút xóa
-const openDeleteModal = (productId, productName) => {
-  productIdToDelete.value = productId;
-  productNameToDelete.value = productName;
-  if (deleteModalInstance) {
-    deleteModalInstance.show();
-  }
-};
+const fetchProducts = async () => {
+  loading.value = true;
+  try {
+    const params = {
+      page: page.value - 1,
+      size: pageSize.value,
+      keyword: searchQuery.value || null,
+      status: filterStatus.value !== '' ? filterStatus.value : null,
+    };
+    const response = await axios.get('/api/san-pham', { params }); 
 
-// Hàm này được gọi khi người dùng nhấn nút "Xóa" trong modal
-const confirmDelete = () => {
-  console.log(`Đang thực hiện xóa sản phẩm có ID: ${productIdToDelete.value}`);
-  
-  // NƠI BẠN SẼ GỌI API ĐỂ XÓA DỮ LIỆU TRÊN SERVER
-  // Ví dụ:
-  // await api.delete(`/products/${productIdToDelete.value}`);
-  
-  // Sau khi API chạy xong, ẩn modal đi
-  if (deleteModalInstance) {
-    deleteModalInstance.hide();
-  }
-  
-  // Và có thể tải lại danh sách sản phẩm hoặc xóa item khỏi mảng trên UI
-  // alert(`Đã xóa sản phẩm: ${productNameToDelete.value}`);
-};
-
-// Khởi tạo đối tượng Modal khi component được gắn vào DOM
-onMounted(() => {
-  const modalElement = document.getElementById('deleteConfirmModal');
-  if (modalElement) {
-    deleteModalInstance = new Modal(modalElement);
-  }
-});
-
-// Hủy đối tượng Modal khi component bị gỡ khỏi DOM để tránh rò rỉ bộ nhớ
-onUnmounted(() => {
-    if (deleteModalInstance) {
-        deleteModalInstance.dispose();
+    if (response.data && response.data.content) {
+        products.value = response.data.content;
+        totalElements.value = response.data.totalElements;
+    } else {
+        products.value = response.data;
+        totalElements.value = response.data.length;
     }
-})
+  } catch (error) {
+    console.error("Lỗi khi tải danh sách sản phẩm:", error);
+    ElMessage.error('Không thể tải dữ liệu sản phẩm.');
+  } finally {
+    loading.value = false;
+  }
+};
+
+const handlePageChange = (newPage) => {
+  page.value = newPage;
+  fetchProducts();
+};
+
+const debouncedSearch = _.debounce(() => {
+    page.value = 1;
+    fetchProducts();
+}, 500);
+
+const confirmDelete = (product) => {
+    ElMessageBox.confirm(
+        `Bạn có chắc chắn muốn xóa sản phẩm "<strong>${product.tenSP}</strong>"?`,
+        'Xác nhận Xóa', { confirmButtonText: 'Xóa', cancelButtonText: 'Hủy', type: 'warning', dangerouslyUseHTMLString: true }
+    )
+    .then(async () => {
+        try {
+            await axios.delete(`/api/san-pham/${product.idSP}`);
+            ElMessage.success('Xóa thành công!');
+            fetchProducts();
+        } catch (error) {
+            ElMessage.error('Có lỗi xảy ra khi xóa sản phẩm.');
+        }
+    })
+    .catch(() => { ElMessage.info('Đã hủy thao tác xóa'); });
+};
+
+onMounted(fetchProducts);
 </script>
+
+<style scoped>
+.product-table { border-radius: 8px; overflow: hidden; }
+.product-thumbnail { width: 60px; height: 60px; object-fit: cover; border-radius: 4px; }
+</style>

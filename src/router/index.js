@@ -21,6 +21,7 @@ import Customers from '../views/Customers.vue';
 import Vouchers from '../views/Vouchers.vue';
 import Posts from '../views/Posts.vue';
 import Reviews from '../views/Reviews.vue';
+
 // --- Trang form ---
 import ProductForm from '../views/forms/ProductForm.vue';
 import AccountForm from '../views/forms/AccountForm.vue';
@@ -79,10 +80,9 @@ const routes = [
             { path: 'pos', name: 'admin.pos', component: PointOfSale },
             
             // Quản lý Sản phẩm
-            { path: 'products', name: 'admin.products.list', component: Products },
+           { path: 'products', name: 'admin.products.list', component: Products },
             { path: 'products/create', name: 'admin.products.create', component: ProductForm },
             { path: 'products/:id/edit', name: 'admin.products.edit', component: ProductForm },
-
             // Quản lý Đơn hàng
             { path: 'orders', name: 'admin.orders.list', component: Orders },
             { path: 'orders/:id', name: 'admin.orders.detail', component: OrderDetail },

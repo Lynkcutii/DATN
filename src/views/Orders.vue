@@ -1,89 +1,55 @@
 <template>
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Quản lý Đơn hàng</h1>
-    <!-- Thông thường trang đơn hàng không có nút "Thêm mới" vì đơn hàng được tạo từ phía khách hàng hoặc POS -->
+    <h1 class="h3 mb-0">Quản lý Đơn hàng</h1>
   </div>
-  <div class="card">
+  <div class="card shadow-sm">
     <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover align-middle">
-          <thead>
-            <tr>
-              <th>Mã ĐH</th>
-              <th>Khách hàng</th>
-              <th>Ngày đặt</th>
-              <th>Tổng tiền</th>
-              <th>Thanh toán</th>
-              <th>Giao hàng</th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            <!-- Dữ liệu mẫu - Sau này bạn sẽ dùng v-for để lặp qua một mảng dữ liệu -->
-            <tr>
-              <th>#1052</th>
-              <td>Nguyễn Văn A</td>
-              <td>28/06/2024</td>
-              <td>800.000đ</td>
-              <td><span class="badge bg-success">Đã trả</span></td>
-              <td><span class="badge bg-info">Đang giao</span></td>
-              <td>
-                <!-- Sửa thẻ <a> thành <router-link> -->
-                <router-link :to="{ name: 'admin.orders.detail', params: { id: 1052 } }" class="btn btn-link text-primary p-1" title="Xem chi tiết">
-                  <i class="fas fa-eye"></i>
-                </router-link>
-              </td>
-            </tr>
-            <tr>
-              <th>#1051</th>
-              <td>Trần Thị B</td>
-              <td>27/06/2024</td>
-              <td>320.000đ</td>
-              <td><span class="badge bg-warning">Chưa trả</span></td>
-              <td><span class="badge bg-secondary">Chờ xử lý</span></td>
-              <td>
-                <!-- Sửa thẻ <a> thành <router-link> -->
-                <router-link :to="{ name: 'admin.orders.detail', params: { id: 1051 } }" class="btn btn-link text-primary p-1" title="Xem chi tiết">
-                  <i class="fas fa-eye"></i>
-                </router-link>
-              </td>
-            </tr>
-             <tr>
-              <th>#1050</th>
-              <td>Lê Văn C</td>
-              <td>26/06/2024</td>
-              <td>250.000đ</td>
-              <td><span class="badge bg-success">Đã trả</span></td>
-              <td><span class="badge bg-primary">Hoàn thành</span></td>
-              <td>
-                <!-- Sửa thẻ <a> thành <router-link> -->
-                <router-link :to="{ name: 'admin.orders.detail', params: { id: 1050 } }" class="btn btn-link text-primary p-1" title="Xem chi tiết">
-                  <i class="fas fa-eye"></i>
-                </router-link>
-              </td>
-            </tr>
-             <tr>
-              <th>#1049</th>
-              <td>Phạm Thị D</td>
-              <td>25/06/2024</td>
-              <td>550.000đ</td>
-              <td><span class="badge bg-danger">Thất bại</span></td>
-              <td><span class="badge bg-danger">Đã hủy</span></td>
-              <td>
-                <!-- Sửa thẻ <a> thành <router-link> -->
-                <router-link :to="{ name: 'admin.orders.detail', params: { id: 1049 } }" class="btn btn-link text-primary p-1" title="Xem chi tiết">
-                  <i class="fas fa-eye"></i>
-                </router-link>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div v-loading="loading">
+        <el-table :data="orders" style="width: 100%">
+          <el-table-column label="Mã HĐ" prop="maHD" width="120" />
+          <el-table-column label="Khách hàng" prop="khachHang.tenKH" />
+          <el-table-column label="Nhân viên" prop="nhanVien.tenNV" />
+          <el-table-column label="Ngày tạo">
+              <template #default="scope">{{ new Date(scope.row.ngayTao).toLocaleDateString('vi-VN') }}</template>
+          </el-table-column>
+          <el-table-column label="Tổng tiền">
+              <template #default="scope">{{ scope.row.tongTien.toLocaleString() }}đ</template>
+          </el-table-column>
+           <el-table-column label="Trạng thái">
+            <template #default="scope">
+              <el-tag :type="scope.row.trangThai ? 'success' : 'info'">{{ scope.row.trangThai ? 'Hoàn thành' : 'Chưa HT' }}</el-tag>
+            </template>
+          </el-table-column>
+          <el-table-column label="Hành động" width="100" align="center">
+            <template #default="scope">
+              <router-link :to="{ name: 'admin.orders.detail', params: { id: scope.row.idHD } }" class="btn btn-link text-primary p-1" title="Xem chi tiết"><i class="fas fa-eye"></i></router-link>
+            </template>
+          </el-table-column>
+        </el-table>
+        <div class="d-flex justify-content-end mt-4">
+            <el-pagination background layout="prev, pager, next" :total="totalElements" :page-size="pageSize" @current-change="handlePageChange" />
+        </div>
       </div>
     </div>
   </div>
 </template>
-
 <script setup>
-// Hiện tại trang này chỉ để hiển thị danh sách, chưa cần logic phức tạp.
-// Sau này bạn có thể thêm logic để lấy danh sách đơn hàng từ API tại đây.
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+const orders = ref([]);
+const loading = ref(true);
+const page = ref(1);
+const pageSize = ref(10);
+const totalElements = ref(0);
+const fetchOrders = async () => {
+  loading.value = true;
+  try {
+    const response = await axios.get('/api/hoa-don', { params: { page: page.value - 1, size: pageSize.value } });
+    orders.value = response.data.content;
+    totalElements.value = response.data.totalElements;
+  } catch (error) { console.error(error); } 
+  finally { loading.value = false; }
+};
+const handlePageChange = (newPage) => { page.value = newPage; fetchOrders(); };
+onMounted(fetchOrders);
 </script>
