@@ -1,9 +1,9 @@
 package com.example.datnspct.Repository;
 
-import com.example.datnspct.Model.PhuongThucThanhToan;
+import com.example.datnspct.Model.PhuongTT;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PhuongThucThanhToanRepository extends JpaRepository<PhuongThucThanhToan, Integer> {
+public interface PhuongThucThanhToanRepository extends JpaRepository<PhuongTT, Integer> {
 }

@@ -2,7 +2,11 @@ package com.example.datnspct.Controller;
 
 import com.example.datnspct.dto.KhachHangDTO;
 import com.example.datnspct.Service.KhachHangService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,9 +36,18 @@ public class KhachHangController {
 
     // Lấy tất cả
     @GetMapping
-    public ResponseEntity<List<KhachHangDTO>> layTatCaKhachHang() {
-        List<KhachHangDTO> khachHangDTOs = khachHangService.layTatCaKhachHang();
-        return ResponseEntity.ok(khachHangDTOs);
+    public ResponseEntity<Page<KhachHangDTO>> layTatCaKhachHang(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String search) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<KhachHangDTO> khachHangPage;
+        if (search != null && !search.isEmpty()) {
+            khachHangPage = khachHangService.searchKhachHang(search, pageable);
+        } else {
+            khachHangPage = khachHangService.layTatCaKhachHang(pageable);
+        }
+        return ResponseEntity.ok(khachHangPage);
     }
 
     // Cập nhật

@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 
 @Entity
 @Table(name = "DanhMuc")
@@ -24,4 +25,7 @@ public class DanhMuc {
 
     @Column(name = "TrangThai")
     private Boolean trangThai;
+
+    @OneToMany(mappedBy = "danhMuc")
+    private List<SanPham> sanPhams;
 }

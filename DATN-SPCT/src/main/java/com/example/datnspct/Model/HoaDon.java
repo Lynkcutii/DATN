@@ -41,4 +41,12 @@ public class HoaDon {
     @Column(name = "TrangThai")
     private Boolean trangThai;
 
+    @ManyToOne
+    @JoinColumn(name = "IdKH", referencedColumnName = "IdKH", insertable = false, updatable = false)
+    private KhachHang khachHang;
+
+    @ManyToOne
+    @JoinColumn(name = "IdNV", referencedColumnName = "IdNV", insertable = false, updatable = false)
+    private NhanVien nhanVien;
+
 }

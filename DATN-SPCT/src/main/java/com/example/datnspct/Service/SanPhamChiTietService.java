@@ -1,10 +1,18 @@
 package com.example.datnspct.Service;
 
+import com.example.datnspct.Model.ChatLieu;
+import com.example.datnspct.Model.MauSac;
+import com.example.datnspct.Model.Size;
+import com.example.datnspct.Model.ThuongHieu;
 import com.example.datnspct.dto.SanPhamChiTietDTO;
 import com.example.datnspct.Model.SanPham;
 import com.example.datnspct.Model.SanPhamChiTiet;
 import com.example.datnspct.Repository.SanPhamChiTietRepository;
 import com.example.datnspct.Repository.SanPhamRepository;
+import com.example.datnspct.Repository.ChatLieuRepository;
+import com.example.datnspct.Repository.ThuongHieuRepository;
+import com.example.datnspct.Repository.SizeRepository;
+import com.example.datnspct.Repository.MauSacRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +28,21 @@ public class SanPhamChiTietService {
     @Autowired
     private SanPhamRepository sanPhamRepository;
 
+    @Autowired
+    private ChatLieuRepository chatLieuRepository;
+
+    @Autowired
+    private ThuongHieuRepository thuongHieuRepository;
+
+    @Autowired
+    private SizeRepository sizeRepository;
+
+    @Autowired
+    private MauSacRepository mauSacRepository;
+
     // Ánh xạ thủ công: Từ Entity sang DTO
     private SanPhamChiTietDTO chuyenSangDTO(SanPhamChiTiet sanPhamChiTiet) {
-        SanPhamChiTietDTO dto = new SanPhamChiTietDTO();
-        dto.setId(sanPhamChiTiet.getId());
-        dto.setMaSPCT(sanPhamChiTiet.getMaSPCT());
-        dto.setIdSP(sanPhamChiTiet.getIdSP());
-        dto.setIdChatLieu(sanPhamChiTiet.getIdChatLieu());
-        dto.setIdThuongHieu(sanPhamChiTiet.getIdThuongHieu());
-        dto.setIdSize(sanPhamChiTiet.getIdSize());
-        dto.setIdMauSac(sanPhamChiTiet.getIdMauSac());
-        dto.setSoLuong(sanPhamChiTiet.getSoLuong());
-        dto.setGia(sanPhamChiTiet.getGia());
-        dto.setMoTa(sanPhamChiTiet.getMoTa());
-        dto.setTrangThai(sanPhamChiTiet.getTrangThai());
-        return dto;
+        return new SanPhamChiTietDTO(sanPhamChiTiet);
     }
 
     // Ánh xạ thủ công: Từ DTO sang Entity
@@ -42,11 +50,22 @@ public class SanPhamChiTietService {
         SanPhamChiTiet sanPhamChiTiet = new SanPhamChiTiet();
         sanPhamChiTiet.setId(dto.getId());
         sanPhamChiTiet.setMaSPCT(dto.getMaSPCT());
-        sanPhamChiTiet.setIdSP(dto.getIdSP());
-        sanPhamChiTiet.setIdChatLieu(dto.getIdChatLieu());
-        sanPhamChiTiet.setIdThuongHieu(dto.getIdThuongHieu());
-        sanPhamChiTiet.setIdSize(dto.getIdSize());
-        sanPhamChiTiet.setIdMauSac(dto.getIdMauSac());
+        // Lấy entity từ repository
+        SanPham sanPham = sanPhamRepository.findById(dto.getIdSP())
+                .orElseThrow(() -> new RuntimeException("Sản phẩm không tồn tại"));
+        sanPhamChiTiet.setSanPham(sanPham);
+        ChatLieu chatLieu = chatLieuRepository.findById(dto.getIdChatLieu())
+                .orElseThrow(() -> new RuntimeException("Chất liệu không tồn tại"));
+        sanPhamChiTiet.setChatLieu(chatLieu);
+        ThuongHieu thuongHieu = thuongHieuRepository.findById(dto.getIdThuongHieu())
+                .orElseThrow(() -> new RuntimeException("Thương hiệu không tồn tại"));
+        sanPhamChiTiet.setThuongHieu(thuongHieu);
+        Size size = sizeRepository.findById(dto.getIdSize())
+                .orElseThrow(() -> new RuntimeException("Size không tồn tại"));
+        sanPhamChiTiet.setSize(size);
+        MauSac mauSac = mauSacRepository.findById(dto.getIdMauSac())
+                .orElseThrow(() -> new RuntimeException("Màu sắc không tồn tại"));
+        sanPhamChiTiet.setMauSac(mauSac);
         sanPhamChiTiet.setSoLuong(dto.getSoLuong());
         sanPhamChiTiet.setGia(dto.getGia());
         sanPhamChiTiet.setMoTa(dto.getMoTa());
@@ -83,11 +102,6 @@ public class SanPhamChiTietService {
         SanPhamChiTiet sanPhamChiTiet = sanPhamChiTietRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Sản phẩm chi tiết không tồn tại"));
         sanPhamChiTiet.setMaSPCT(dto.getMaSPCT());
-        sanPhamChiTiet.setIdSP(dto.getIdSP());
-        sanPhamChiTiet.setIdChatLieu(dto.getIdChatLieu());
-        sanPhamChiTiet.setIdThuongHieu(dto.getIdThuongHieu());
-        sanPhamChiTiet.setIdSize(dto.getIdSize());
-        sanPhamChiTiet.setIdMauSac(dto.getIdMauSac());
         sanPhamChiTiet.setSoLuong(dto.getSoLuong());
         sanPhamChiTiet.setGia(dto.getGia());
         sanPhamChiTiet.setMoTa(dto.getMoTa());

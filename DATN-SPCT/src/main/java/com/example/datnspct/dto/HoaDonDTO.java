@@ -12,6 +12,7 @@ public class HoaDonDTO {
     private Integer idHD;
     private String maHD;
     private Integer idKhachHang;
+    private String customerName;
     private Integer idNhanVien;
     private LocalDateTime ngayTao;
     private LocalDateTime ngaySua;
