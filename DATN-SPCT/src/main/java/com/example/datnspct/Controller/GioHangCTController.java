@@ -1,51 +1,44 @@
 package com.example.datnspct.Controller;
 
-import com.example.datnspct.dto.GioHangCTDTO;
 import com.example.datnspct.Service.GioHangCTService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.datnspct.Service.GioHangService;
+import com.example.datnspct.dto.GioHangCTDTO;
+import com.example.datnspct.dto.GioHangDTO;
+import com.example.datnspct.dto.Request.GioHangCTCreateRequest;
+import com.example.datnspct.dto.Request.GioHangCTUpdateRequest;
+import com.example.datnspct.dto.Request.GioHangCreateRequest;
+import com.example.datnspct.dto.Request.GioHangUpdateRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/giohangct")
+@RequestMapping("/CART-DETAILS")
+@RequiredArgsConstructor
 public class GioHangCTController {
-    @Autowired
-    private GioHangCTService service;
+    private final GioHangCTService gioHangCTService;
 
-    // Tạo mới
-    @PostMapping
-    public ResponseEntity<GioHangCTDTO> create(@RequestBody GioHangCTDTO dto) {
-        GioHangCTDTO created = service.create(dto);
-        return ResponseEntity.ok(created);
-    }
-
-    // Lấy theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<GioHangCTDTO> getById(@PathVariable Integer id) {
-        GioHangCTDTO dto = service.getById(id);
-        return ResponseEntity.ok(dto);
-    }
-
-    // Lấy tất cả
-    @GetMapping
+    @GetMapping("/get-All")
     public ResponseEntity<List<GioHangCTDTO>> getAll() {
-        List<GioHangCTDTO> list = service.getAll();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(gioHangCTService.getAll());
     }
 
-    // Cập nhật
-    @PutMapping("/{id}")
-    public ResponseEntity<GioHangCTDTO> update(@PathVariable Integer id, @RequestBody GioHangCTDTO dto) {
-        GioHangCTDTO updated = service.update(id, dto);
-        return ResponseEntity.ok(updated);
+    @PostMapping("/create")
+    public void create(@RequestBody GioHangCTCreateRequest request){
+        gioHangCTService.create(request);
     }
-
-    // Xóa
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/inactive")
+    public void delete(@RequestParam String gioHangCTId) {
+        gioHangCTService.delete(gioHangCTId);
     }
-} 
+    @PutMapping("/update")
+    public void update(@RequestBody GioHangCTUpdateRequest request){
+        gioHangCTService.update(request);
+    }
+    @GetMapping("/get-by-id")
+    public GioHangCTDTO getById(@RequestParam String gioHangCTId){
+        return gioHangCTService.getById(gioHangCTId);
+    }
+}

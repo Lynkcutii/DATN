@@ -39,17 +39,17 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.mbamc.common</groupId>-->
-<!--            <artifactId>common-util</artifactId>-->
-<!--            <version>${common.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.mbamc.common</groupId>
+            <artifactId>common-util</artifactId>
+            <version>${common.version}</version>
+        </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.mbamc.common</groupId>-->
-<!--            <artifactId>common-model</artifactId>-->
-<!--            <version>${common.version}</version>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.mbamc.common</groupId>
+            <artifactId>common-model</artifactId>
+            <version>${common.version}</version>
+        </dependency>
         <!--        <dependency>-->
         <!--            <groupId>com.mbamc.common</groupId>-->
         <!--            <artifactId>common-web</artifactId>-->

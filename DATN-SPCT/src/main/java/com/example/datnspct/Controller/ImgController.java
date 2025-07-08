@@ -1,51 +1,40 @@
 package com.example.datnspct.Controller;
 
-import com.example.datnspct.dto.ImgDTO;
 import com.example.datnspct.Service.ImgService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.datnspct.dto.ImgDTO;
+import com.example.datnspct.dto.Request.ImgCreateRequest;
+import com.example.datnspct.dto.Request.ImgUpdateRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/img")
+@RequestMapping("/Img")
+@RequiredArgsConstructor
 public class ImgController {
-    @Autowired
-    private ImgService service;
+    private final ImgService imgService;
 
-    // Tạo mới
-    @PostMapping
-    public ResponseEntity<ImgDTO> create(@RequestBody ImgDTO dto) {
-        ImgDTO created = service.create(dto);
-        return ResponseEntity.ok(created);
-    }
-
-    // Lấy theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<ImgDTO> getById(@PathVariable Integer id) {
-        ImgDTO dto = service.getById(id);
-        return ResponseEntity.ok(dto);
-    }
-
-    // Lấy tất cả
-    @GetMapping
+    @GetMapping("/get-All")
     public ResponseEntity<List<ImgDTO>> getAll() {
-        List<ImgDTO> list = service.getAll();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(imgService.getAll());
     }
 
-    // Cập nhật
-    @PutMapping("/{id}")
-    public ResponseEntity<ImgDTO> update(@PathVariable Integer id, @RequestBody ImgDTO dto) {
-        ImgDTO updated = service.update(id, dto);
-        return ResponseEntity.ok(updated);
+    @PostMapping("/create")
+    public void create(@RequestBody ImgCreateRequest request){
+        imgService.create(request);
     }
-
-    // Xóa
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/delete")
+    public void inactive(@RequestParam String imgId){
+        imgService.delete(imgId);
     }
-} 
+    @PutMapping("/update")
+    public void update(@RequestBody ImgUpdateRequest request){
+        imgService.update(request);
+    }
+    @GetMapping("/get-by-id")
+    public ImgDTO getById(@RequestParam String imgId){
+     return imgService.getById(imgId);
+    }
+}

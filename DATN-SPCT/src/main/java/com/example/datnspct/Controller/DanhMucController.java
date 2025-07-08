@@ -2,60 +2,39 @@ package com.example.datnspct.Controller;
 
 import com.example.datnspct.Service.DanhMucService;
 import com.example.datnspct.dto.DanhMucDTO;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.datnspct.dto.Request.DanhMucCreateRequest;
+import com.example.datnspct.dto.Request.DanhMucUpdateRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/danhmuc")
-@CrossOrigin(origins = "*")
+@RequestMapping("/Category")
+@RequiredArgsConstructor
 public class DanhMucController {
-    @Autowired
-    private DanhMucService danhMucService;
+    private final DanhMucService danhMucService;
 
-    @PostMapping
-    public ResponseEntity<DanhMucDTO> create(@RequestBody DanhMucDTO dto) {
-        return ResponseEntity.ok(danhMucService.create(dto));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<DanhMucDTO> getById(@PathVariable Integer id) {
-        return ResponseEntity.ok(danhMucService.getById(id));
-    }
-
-    // Lấy theo slug
-//    @GetMapping("/slug/{slug}")
-//    public ResponseEntity<DanhMucDTO> getBySlug(@PathVariable String slug) {
-//        return ResponseEntity.ok(danhMucService.getBySlug(slug));
-//    }
-
-    @GetMapping
+    @GetMapping("/get-All")
     public ResponseEntity<List<DanhMucDTO>> getAll() {
         return ResponseEntity.ok(danhMucService.getAll());
     }
 
-    // Lấy danh mục cha
-//    @GetMapping("/parents")
-//    public ResponseEntity<List<DanhMucDTO>> getParents() {
-//        return ResponseEntity.ok(danhMucService.getParents());
-//    }
-//
-//    // Lấy danh mục con
-//    @GetMapping("/{parentId}/children")
-//    public ResponseEntity<List<DanhMucDTO>> getChildren(@PathVariable Integer parentId) {
-//        return ResponseEntity.ok(danhMucService.getChildren(parentId));
-//    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<DanhMucDTO> update(@PathVariable Integer id, @RequestBody DanhMucDTO dto) {
-        return ResponseEntity.ok(danhMucService.update(id, dto));
+    @PostMapping("/create")
+    public void create(@RequestBody DanhMucCreateRequest request){
+        danhMucService.create(request);
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        danhMucService.delete(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/inactive")
+    public void inactive(@RequestParam String danhMucId) {
+        danhMucService.inactiveDanhMuc(danhMucId);
+    }
+    @PutMapping("/update")
+    public void update(@RequestBody DanhMucUpdateRequest request){
+        danhMucService.update(request);
+    }
+    @GetMapping("/get-by-id")
+    public DanhMucDTO getById(@RequestParam String danhMucId){
+        return danhMucService.getById(danhMucId);
     }
 }

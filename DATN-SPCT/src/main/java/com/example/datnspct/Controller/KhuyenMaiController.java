@@ -1,52 +1,40 @@
 package com.example.datnspct.Controller;
 
-import com.example.datnspct.dto.KhuyenMaiDTO;
 import com.example.datnspct.Service.KhuyenMaiService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.datnspct.dto.KhuyenMaiDTO;
+import com.example.datnspct.dto.Request.KhuyenMaiCreateRequest;
+import com.example.datnspct.dto.Request.KhuyenMaiUpdateRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
-@RequestMapping("/api/khuyenmai")
+@RequestMapping("/Promotion")
+@RequiredArgsConstructor
 public class KhuyenMaiController {
-    @Autowired
-    private KhuyenMaiService khuyenMaiService;
+    private final KhuyenMaiService khuyenMaiService;
 
-    // Tạo mới
-    @PostMapping
-    public ResponseEntity<KhuyenMaiDTO> create(@RequestBody KhuyenMaiDTO dto) {
-        KhuyenMaiDTO created = khuyenMaiService.create(dto);
-        return ResponseEntity.ok(created);
-    }
-
-    // Lấy theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<KhuyenMaiDTO> getById(@PathVariable Integer id) {
-        KhuyenMaiDTO dto = khuyenMaiService.getById(id);
-        return ResponseEntity.ok(dto);
-    }
-
-    // Lấy tất cả
-    @GetMapping
+    @GetMapping("/get-All")
     public ResponseEntity<List<KhuyenMaiDTO>> getAll() {
-        List<KhuyenMaiDTO> list = khuyenMaiService.getAll();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(khuyenMaiService.getAll());
     }
 
-    // Cập nhật
-    @PutMapping("/{id}")
-    public ResponseEntity<KhuyenMaiDTO> update(@PathVariable Integer id, @RequestBody KhuyenMaiDTO dto) {
-        KhuyenMaiDTO updated = khuyenMaiService.update(id, dto);
-        return ResponseEntity.ok(updated);
+    @PostMapping("/create")
+    public void create(@RequestBody KhuyenMaiCreateRequest request){
+        khuyenMaiService.create(request);
     }
-
-    // Xóa
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        khuyenMaiService.delete(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/inactive")
+    public void inactive(@RequestParam String khuyenMaiId) {
+        khuyenMaiService.inactiveKhuyenMai(khuyenMaiId);
+    }
+    @PutMapping("/update")
+    public void update(@RequestBody KhuyenMaiUpdateRequest request){
+        khuyenMaiService.update(request);
+    }
+    @GetMapping("/get-by-id")
+    public KhuyenMaiDTO getById(@RequestParam String khuyenMaiId){
+        return khuyenMaiService.getById(khuyenMaiId);
     }
 }

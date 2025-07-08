@@ -1,51 +1,40 @@
 package com.example.datnspct.Controller;
 
-import com.example.datnspct.dto.PhuongTTDTO;
-import com.example.datnspct.Service.PhuongTTService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.datnspct.Service.PhuongThucThanhToanService;
+import com.example.datnspct.dto.PhuongThucThanhToanDTO;
+import com.example.datnspct.dto.Request.PhuongThucThanhToanCreateRequest;
+import com.example.datnspct.dto.Request.PhuongThucThanhToanUpdateRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/phuongthucthanhtoan")
+@RequestMapping("/Payment")
+@RequiredArgsConstructor
 public class PhuongThucThanhToanController {
-    @Autowired
-    private PhuongTTService service;
+    private final PhuongThucThanhToanService phuongThucThanhToanService;
 
-    // Tạo mới
-    @PostMapping
-    public ResponseEntity<PhuongTTDTO> create(@RequestBody PhuongTTDTO dto) {
-        PhuongTTDTO created = service.create(dto);
-        return ResponseEntity.ok(created);
+    @GetMapping("/get-All")
+    public ResponseEntity<List<PhuongThucThanhToanDTO>> getAll() {
+        return ResponseEntity.ok(phuongThucThanhToanService.getAll());
     }
 
-    // Lấy theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<PhuongTTDTO> getById(@PathVariable Integer id) {
-        PhuongTTDTO dto = service.getById(id);
-        return ResponseEntity.ok(dto);
+    @PostMapping("/create")
+    public void create(@RequestBody PhuongThucThanhToanCreateRequest request){
+        phuongThucThanhToanService.create(request);
     }
-
-    // Lấy tất cả
-    @GetMapping
-    public ResponseEntity<List<PhuongTTDTO>> getAll() {
-        List<PhuongTTDTO> list = service.getAll();
-        return ResponseEntity.ok(list);
+    @DeleteMapping("/delete")
+    public void delete(@RequestParam String phuongThucThanhToanId) {
+        phuongThucThanhToanService.delete(phuongThucThanhToanId);
     }
-
-    // Cập nhật
-    @PutMapping("/{id}")
-    public ResponseEntity<PhuongTTDTO> update(@PathVariable Integer id, @RequestBody PhuongTTDTO dto) {
-        PhuongTTDTO updated = service.update(id, dto);
-        return ResponseEntity.ok(updated);
+    @PutMapping("/update")
+    public void update(@RequestBody PhuongThucThanhToanUpdateRequest request){
+        phuongThucThanhToanService.update(request);
     }
-
-    // Xóa
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/get-by-id")
+    public PhuongThucThanhToanDTO getById(@RequestParam String phuongThucThanhToanId){
+        return phuongThucThanhToanService.getById(phuongThucThanhToanId);
     }
 }

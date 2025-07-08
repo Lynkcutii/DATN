@@ -5,15 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import java.time.LocalDate;
+
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "NhanVien")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class NhanVien {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdNV")
@@ -29,7 +32,7 @@ public class NhanVien {
     private String gioiTinh;
 
     @Column(name = "NgaySinh")
-    private LocalDate ngaySinh;
+    private LocalDateTime ngaySinh;
 
     @Column(name = "SDT", length = 20)
     private String sdt;
@@ -41,7 +44,7 @@ public class NhanVien {
     private String diaChi;
 
     @ManyToOne
-    @JoinColumn(name = "IdTK", referencedColumnName = "IdTK")
+    @JoinColumn(name = "IdTK")
     private TaiKhoan taiKhoan;
 
     @Column(name = "TrangThai")

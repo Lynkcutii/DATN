@@ -8,13 +8,15 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+
 @Entity
 @Table(name = "GioHang")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class GioHang {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdGH")
@@ -24,8 +26,12 @@ public class GioHang {
     private String maGH;
 
     @ManyToOne
-    @JoinColumn(name = "IdKH", referencedColumnName = "IdKH")
+    @JoinColumn(name = "IdKH")
     private KhachHang khachHang;
+
+    @ManyToOne
+    @JoinColumn(name = "IdTK")
+    private TaiKhoan taiKhoan;
 
     @Column(name = "TrangThai")
     private Boolean trangThai;
@@ -35,8 +41,4 @@ public class GioHang {
 
     @Column(name = "NgaySua")
     private LocalDateTime ngaySua;
-
-    @ManyToOne
-    @JoinColumn(name = "IdTK", referencedColumnName = "IdTK")
-    private TaiKhoan taiKhoan;
-} 
+}

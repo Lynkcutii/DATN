@@ -1,51 +1,40 @@
 package com.example.datnspct.Controller;
 
-import com.example.datnspct.dto.ThuongHieuDTO;
 import com.example.datnspct.Service.ThuongHieuService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.datnspct.dto.Request.ThuongHieuCreateRequest;
+import com.example.datnspct.dto.Request.ThuongHieuUpdateRequest;
+import com.example.datnspct.dto.ThuongHieuDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/thuonghieu")
+@RequestMapping("/Trademark")
+@RequiredArgsConstructor
 public class ThuongHieuController {
-    @Autowired
-    private ThuongHieuService service;
+    private final ThuongHieuService thuongHieuService;
 
-    // Tạo mới
-    @PostMapping
-    public ResponseEntity<ThuongHieuDTO> create(@RequestBody ThuongHieuDTO dto) {
-        ThuongHieuDTO created = service.create(dto);
-        return ResponseEntity.ok(created);
-    }
-
-    // Lấy theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<ThuongHieuDTO> getById(@PathVariable Integer id) {
-        ThuongHieuDTO dto = service.getById(id);
-        return ResponseEntity.ok(dto);
-    }
-
-    // Lấy tất cả
-    @GetMapping
+    @GetMapping("/get-All")
     public ResponseEntity<List<ThuongHieuDTO>> getAll() {
-        List<ThuongHieuDTO> list = service.getAll();
-        return ResponseEntity.ok(list);
+        return ResponseEntity.ok(thuongHieuService.getAll());
     }
 
-    // Cập nhật
-    @PutMapping("/{id}")
-    public ResponseEntity<ThuongHieuDTO> update(@PathVariable Integer id, @RequestBody ThuongHieuDTO dto) {
-        ThuongHieuDTO updated = service.update(id, dto);
-        return ResponseEntity.ok(updated);
+    @PostMapping("/create")
+    public void create(@RequestBody ThuongHieuCreateRequest request){
+        thuongHieuService.create(request);
     }
-
-    // Xóa
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Integer id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/inactive")
+    public void inactive(@RequestParam String thuongHieuId) {
+        thuongHieuService.inactiveThuongHieu(thuongHieuId);
+    }
+    @PutMapping("/update")
+    public void update(@RequestBody ThuongHieuUpdateRequest request){
+        thuongHieuService.update(request);
+    }
+    @GetMapping("/get-by-id")
+    public ThuongHieuDTO getById(@RequestParam String thuongHieuId){
+        return thuongHieuService.getById(thuongHieuId);
     }
 }

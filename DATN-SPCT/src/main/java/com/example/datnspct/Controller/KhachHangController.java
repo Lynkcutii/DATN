@@ -1,66 +1,40 @@
 package com.example.datnspct.Controller;
 
-import com.example.datnspct.dto.KhachHangDTO;
 import com.example.datnspct.Service.KhachHangService;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
+import com.example.datnspct.dto.KhachHangDTO;
+import com.example.datnspct.dto.Request.KhachHangCreateRequest;
+import com.example.datnspct.dto.Request.KhachHangUpdateRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:5174")
 @RestController
-@RequestMapping("/api/khachhang")
+@RequestMapping("/CLIENT")
+@RequiredArgsConstructor
 public class KhachHangController {
+    private final KhachHangService khachHangService;
 
-    @Autowired
-    private KhachHangService khachHangService;
-
-    // Tạo mới
-    @PostMapping
-    public ResponseEntity<KhachHangDTO> taoKhachHang(@RequestBody KhachHangDTO khachHangDTO) {
-        KhachHangDTO khachHangDaTao = khachHangService.taoKhachHang(khachHangDTO);
-        return ResponseEntity.ok(khachHangDaTao);
+    @GetMapping("/get-All")
+    public ResponseEntity<List<KhachHangDTO>> getAll() {
+        return ResponseEntity.ok(khachHangService.getAll());
     }
 
-    // Lấy theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<KhachHangDTO> layKhachHangTheoId(@PathVariable Integer id) {
-        KhachHangDTO khachHangDTO = khachHangService.layKhachHangTheoId(id);
-        return ResponseEntity.ok(khachHangDTO);
+    @PostMapping("/create")
+    public void create(@RequestBody KhachHangCreateRequest request){
+        khachHangService.create(request);
     }
-
-    // Lấy tất cả
-    @GetMapping
-    public ResponseEntity<Page<KhachHangDTO>> layTatCaKhachHang(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String search) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<KhachHangDTO> khachHangPage;
-        if (search != null && !search.isEmpty()) {
-            khachHangPage = khachHangService.searchKhachHang(search, pageable);
-        } else {
-            khachHangPage = khachHangService.layTatCaKhachHang(pageable);
-        }
-        return ResponseEntity.ok(khachHangPage);
+    @GetMapping("/inactive")
+    public void inactive(@RequestParam String khachHangId) {
+        khachHangService.inactiveKhachHang(khachHangId);
     }
-
-    // Cập nhật
-    @PutMapping("/{id}")
-    public ResponseEntity<KhachHangDTO> capNhatKhachHang(@PathVariable Integer id, @RequestBody KhachHangDTO khachHangDTO) {
-        KhachHangDTO khachHangDaCapNhat = khachHangService.capNhatKhachHang(id, khachHangDTO);
-        return ResponseEntity.ok(khachHangDaCapNhat);
+    @PutMapping("/update")
+    public void update(@RequestBody KhachHangUpdateRequest request){
+        khachHangService.update(request);
     }
-
-    // Xóa
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> xoaKhachHang(@PathVariable Integer id) {
-        khachHangService.xoaKhachHang(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/get-by-id")
+    public KhachHangDTO getById(@RequestParam String khachHangId){
+        return khachHangService.getById(khachHangId);
     }
 }

@@ -9,12 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class KhachHangDTO {
-    private Integer idKH; // ID Khách Hàng
-    private String maKH; // Mã Khách Hàng
-    private String tenKH; // Tên Khách Hàng
-    private String gioiTinh; // Giới Tính
-    private String sdt; // Số Điện Thoại
-    private String diaChi; // Địa Chỉ
-    private Integer idTK; // ID Tài Khoản
-    private Boolean trangThai; // Trạng Thái
+    private Integer idKH;
+    private String maKH;
+    private String tenKH;
+    private String gioiTinh;
+    private String sdt;
+    private String diaChi;
+    private TaiKhoanDTO taiKhoan; // Liên kết tới DTO TaiKhoan
+    private Boolean trangThai;
 }

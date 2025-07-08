@@ -6,13 +6,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
 @Entity
 @Table(name = "Img")
-@AllArgsConstructor
-@NoArgsConstructor
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class Img {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "IdImg")
@@ -22,12 +24,12 @@ public class Img {
     @JoinColumn(name = "IdSPCT", referencedColumnName = "IdSPCT")
     private SanPhamChiTiet sanPhamChiTiet;
 
-    @Column(name = "link")
+    @Column(name = "link", columnDefinition = "NVARCHAR(MAX)")
     private String link;
 
-    @Column(name = "name")
-    private String name;
+    @Column(name = "name", length = 255)
+    private String nameImg;
 
-    @Column(name = "size")
+    @Column(name = "size", length = 50)
     private String size;
-} 
+}

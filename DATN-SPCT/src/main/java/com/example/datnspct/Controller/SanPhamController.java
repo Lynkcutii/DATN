@@ -1,52 +1,40 @@
 package com.example.datnspct.Controller;
 
-import com.example.datnspct.dto.SanPhamDTO;
 import com.example.datnspct.Service.SanPhamService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.datnspct.dto.Request.SanPhamCreateRequest;
+import com.example.datnspct.dto.Request.SanPhamUpdateRequest;
+import com.example.datnspct.dto.SanPhamDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/sanpham")
+@RequestMapping("/Product")
+@RequiredArgsConstructor
 public class SanPhamController {
+    private final SanPhamService sanPhamService;
 
-    @Autowired
-    private SanPhamService sanPhamService;
-
-    // Tạo mới
-    @PostMapping
-    public ResponseEntity<SanPhamDTO> taoSanPham(@RequestBody SanPhamDTO sanPhamDTO) {
-        SanPhamDTO sanPhamDaTao = sanPhamService.taoSanPham(sanPhamDTO);
-        return ResponseEntity.ok(sanPhamDaTao);
+    @GetMapping("/get-All")
+    public ResponseEntity<List<SanPhamDTO>> getAll() {
+        return ResponseEntity.ok(sanPhamService.getAll());
     }
 
-    // Lấy theo ID
-    @GetMapping("/{id}")
-    public ResponseEntity<SanPhamDTO> laySanPhamTheoId(@PathVariable Integer id) {
-        SanPhamDTO sanPhamDTO = sanPhamService.laySanPhamTheoId(id);
-        return ResponseEntity.ok(sanPhamDTO);
+    @PostMapping("/create")
+    public void create(@RequestBody SanPhamCreateRequest request){
+        sanPhamService.create(request);
     }
-
-    // Lấy tất cả
-    @GetMapping
-    public ResponseEntity<List<SanPhamDTO>> layTatCaSanPham() {
-        List<SanPhamDTO> sanPhamDTOs = sanPhamService.layTatCaSanPham();
-        return ResponseEntity.ok(sanPhamDTOs);
+    @GetMapping("/inactive")
+    public void inactive(@RequestParam String sanPhamId) {
+        sanPhamService.inactiveSanPham(sanPhamId);
     }
-
-    // Cập nhật
-    @PutMapping("/{id}")
-    public ResponseEntity<SanPhamDTO> capNhatSanPham(@PathVariable Integer id, @RequestBody SanPhamDTO sanPhamDTO) {
-        SanPhamDTO sanPhamDaCapNhat = sanPhamService.capNhatSanPham(id, sanPhamDTO);
-        return ResponseEntity.ok(sanPhamDaCapNhat);
+    @PutMapping("/update")
+    public void update(@RequestBody SanPhamUpdateRequest request){
+        sanPhamService.update(request);
     }
-
-    // Xóa
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> xoaSanPham(@PathVariable Integer id) {
-        sanPhamService.xoaSanPham(id);
-        return ResponseEntity.noContent().build();
+    @GetMapping("/get-by-id")
+    public SanPhamDTO getById(@RequestParam String sanPhamId){
+        return sanPhamService.getById(sanPhamId);
     }
 }

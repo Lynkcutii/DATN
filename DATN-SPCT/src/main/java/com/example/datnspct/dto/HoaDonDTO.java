@@ -1,21 +1,29 @@
 package com.example.datnspct.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Data
-@Getter
+@NoArgsConstructor
+@AllArgsConstructor
 public class HoaDonDTO {
-    private Integer idHD;
+    private Integer IdHD;
+
     private String maHD;
+
     private Integer idKhachHang;
-    private String customerName;
+
     private Integer idNhanVien;
+
     private LocalDateTime ngayTao;
+
     private LocalDateTime ngaySua;
+
     private BigDecimal tongTien;
+
     private Boolean trangThai;
 }

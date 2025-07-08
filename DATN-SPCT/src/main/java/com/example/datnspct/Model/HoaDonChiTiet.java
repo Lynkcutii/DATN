@@ -23,7 +23,7 @@ public class HoaDonChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "IdSP", referencedColumnName = "IdSPCT")
-    private SanPhamChiTiet sanPhamct;
+    private SanPhamChiTiet sanPham;
 
     @ManyToOne
     @JoinColumn(name = "IdHD", referencedColumnName = "IdHD")
@@ -35,7 +35,7 @@ public class HoaDonChiTiet {
 
     @ManyToOne
     @JoinColumn(name = "IdPTT", referencedColumnName = "IdPTT")
-    private PhuongTT phuongThucThanhToan;
+    private PhuongThucThanhToan phuongThucThanhToan;
 
     @Column(name = "SoLuong")
     private Integer soLuong;
