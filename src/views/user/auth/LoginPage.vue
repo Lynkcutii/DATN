@@ -1,51 +1,58 @@
 <template>
-  <div class="auth-page-wrapper" style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?q=80&w=2070');">
-    <div class="auth-form-container">
-      <div class="card">
-        <div class="card-body p-4 p-lg-5">
-          <div class="text-center mb-4">
-            <img src="/img/logo/logo.jpeg" alt="Nexvibe Logo" height="50" class="mb-3">
-            <h2 class="card-title fw-bold">Chào mừng trở lại!</h2>
-            <p class="text-muted">Đăng nhập để tiếp tục</p>
-          </div>
-          <form @submit.prevent="handleLogin">
-            <div class="mb-3">
-              <label for="email" class="form-label">Email</label>
-              <input type="email" class="form-control" id="email" placeholder="Nhập email của bạn">
-            </div>
-            <div class="mb-3">
-              <label for="password" class="form-label">Mật khẩu</label>
-              <input type="password" class="form-control" id="password" placeholder="Nhập mật khẩu">
-            </div>
-            <div class="d-flex justify-content-between align-items-center mb-4">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" id="rememberMe">
-                <label class="form-check-label" for="rememberMe">Ghi nhớ tôi</label>
+  <div class="auth-page-wrapper">
+    <!-- Cột Form Đăng nhập -->
+    <div class="auth-form-container m-2 ">
+        <div class="card border-0">
+          <div class="card-body p-4 p-lg-5">
+            <h4 class="card-title mb-4 fw-bold">Đăng nhập</h4>
+            
+            <form @submit.prevent="handleLogin">
+              <div class="mb-3">
+                <input type="email" class="form-control" placeholder="Email / Tên đăng nhập">
               </div>
-              <a href="#" class="small">Quên mật khẩu?</a>
+              <div class="mb-3">
+                <input type="password" class="form-control" placeholder="Mật khẩu">
+              </div>
+              <button type="submit" class="btn btn-primary w-100 mt-2">ĐĂNG NHẬP</button>
+              <div class="text-end mt-2">
+                <a href="#" class="small">Quên mật khẩu?</a>
+              </div>
+            </form>
+
+            <div class="social-login-divider">HOẶC</div>
+
+            <div class="row g-2">
+              <div class="col">
+                <button class="btn social-login-btn">
+                  <i class="fab fa-facebook"></i> Facebook
+                </button>
+              </div>
+              <div class="col">
+                <button class="btn social-login-btn">
+                  <i class="fab fa-google"></i> Google
+                </button>
+              </div>
             </div>
-            <button type="submit" class="btn btn-primary w-100 btn-lg">Đăng nhập</button>
-          </form>
-          <div class="text-center mt-4">
-            <small class="text-muted">Chưa có tài khoản? <router-link to="/register">Đăng ký ngay</router-link></small>
+
+            <div class="text-center mt-4">
+              <span class="text-muted small">Bạn mới biết đến NEXVIBE? </span>
+              <router-link to="/register" class="small fw-bold">Đăng ký</router-link>
+            </div>
           </div>
         </div>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+// Script giữ nguyên như cũ
 import { useAuthStore } from '@/stores/auth';
 import { useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
-
 const auth = useAuthStore();
 const router = useRouter();
 const toast = useToast();
-
 const handleLogin = () => {
-    // Giả lập đăng nhập thành công
     const userData = { id: 1, name: 'Trần Minh Tuấn', email: 'tuan.tm@nexvibe.com' };
     const token = 'fake-jwt-token-string';
     auth.login(userData, token);

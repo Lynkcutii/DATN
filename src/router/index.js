@@ -44,6 +44,7 @@ import OrderSuccessPage from '../views/user/OrderSuccessPage.vue';
 import AboutPage from '../views/user/AboutPage.vue';
 import BlogPage from '../views/user/BlogPage.vue';
 import ContactPage from '../views/user/ContactPage.vue';
+import OrderDetailPage from '../views/user/account/OrderDetailPage.vue';
 
 const routes = [
     // --- NHÁNH ROUTE CHO TRANG NGƯỜI DÙNG (USER) ---
@@ -61,6 +62,7 @@ const routes = [
             { path: 'register', name: 'register', component: RegisterPage },
             { path: 'profile', name: 'profile', component: ProfilePage },
             { path: 'order-history', name: 'order.history', component: OrderHistoryPage },
+            { path: 'orders/:id', name: 'order.detail', component: OrderDetailPage, props: true },
             { path: 'about', name: 'about', component: AboutPage },
             { path: 'blog', name: 'blog', component: BlogPage },
             { path: 'contact', name: 'contact', component: ContactPage },

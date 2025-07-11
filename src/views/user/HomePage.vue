@@ -1,39 +1,54 @@
 <template>
-  <!-- Bỏ class "container" ở layout chính để các khối toàn màn hình hoạt động -->
   <div>
-    <!-- 1. Hero Banner -->
+    <!-- 1. Hero Banner: Khối này giờ sẽ chiếm toàn bộ chiều rộng -->
     <swiper :modules="[Navigation, Pagination, Autoplay]" :slides-per-view="1" navigation loop :autoplay="{ delay: 4000, disableOnInteraction: false }">
       <swiper-slide v-for="banner in heroBanners" :key="banner.id">
         <div class="hero-banner" :style="{ backgroundImage: `url(${banner.imageUrl})` }">
           <div class="container text-white">
-            <h1 class="display-2 fw-bolder">{{ banner.title }}</h1>
-            <p class="lead col-lg-6">{{ banner.subtitle }}</p>
-            <router-link to="/products" class="btn btn-light btn-lg mt-3">MUA NGAY <i class="fas fa-arrow-right ms-2"></i></router-link>
+            <div class="row">
+              <div class="col-lg-8 text-center text-lg-start">
+                  <h1 class="display-2 fw-bolder">{{ banner.title }}</h1>
+                  <p class="lead">{{ banner.subtitle }}</p>
+                  <router-link to="/products" class="btn btn-light btn-lg mt-3">
+                      MUA NGAY <i class="fas fa-arrow-right ms-2"></i>
+                  </router-link>
+              </div>
+            </div>
           </div>
         </div>
       </swiper-slide>
     </swiper>
-
-    <!-- 2. Thanh thương hiệu chạy chữ -->
-    <div class="marquee-container bg-dark text-white py-3">
-      <div class="marquee-content">
-        <span>NEXVIBE - PERFORMANCE WEAR</span><i class="fas fa-bolt mx-3"></i>
-        <span>COOL & ACTIVE</span><i class="fas fa-bolt mx-3"></i>
-        <span>NEXVIBE - PERFORMANCE WEAR</span><i class="fas fa-bolt mx-3"></i>
-        <span>COOL & ACTIVE</span><i class="fas fa-bolt mx-3"></i>
-      </div>
+  
+    <!-- 2. Thanh hiệu ứng chạy chữ -->
+    <div class="marquee-container bg-primary text-white">
+        <div class="marquee-content">
+            <span>NEXVIBE - PERFORMANCE WEAR</span><i class="fas fa-bolt mx-3"></i>
+            <span>COOL & ACTIVE</span><i class="fas fa-bolt mx-3"></i>
+            <span>NEXVIBE - PERFORMANCE WEAR</span><i class="fas fa-bolt mx-3"></i>
+            <span>COOL & ACTIVE</span><i class="fas fa-bolt mx-3"></i>
+        </div>
     </div>
     
     <div class="container py-5">
-      <!-- 3. Danh mục nổi bật -->
-      <div class="row text-center g-4 mb-5">
-        <div class="col" v-for="cat in categories" :key="cat.name">
-            <a href="#" class="category-item text-dark text-decoration-none">
-                <div class="category-icon-wrapper"><img :src="cat.iconUrl" :alt="cat.name"></div>
-                <h6 class="mt-2">{{ cat.name }}</h6>
-            </a>
+      <!-- 3. KHỐI DANH MỤC MÔN THỂ THAO (THÊM VÀO ĐÂY) -->
+    <!-- ========================================================== -->
+    <div class="container text-center py-5">
+      <!-- <h2 class="mb-5 fw-bold">MUA SẮM THEO MÔN THỂ THAO</h2> -->
+      <div class="row">
+        <!-- Dùng v-for để lặp qua mảng categories -->
+        <div class="col" v-for="category in categories" :key="category.name">
+          <router-link to="/products" class="text-dark text-decoration-none category-item">
+            <!-- Thẻ div này là khung tròn có ảnh nền -->
+            <div 
+              class="category-circle" 
+              :style="{ backgroundImage: `url(${category.iconUrl})` }">
+            </div>
+            <!-- Tên danh mục -->
+            <span class="category-name">{{ category.name }}</span>
+          </router-link>
         </div>
       </div>
+    </div>
       
       <!-- 4. Khối quảng cáo theo giới tính -->
       <div class="row g-4 mb-5">
@@ -66,7 +81,7 @@
         </div>
       </div>
 
-      <!-- 7. Khối Cam kết/Giá trị cốt lõi -->
+      <!-- 7. Khối Cam kết/Giá trị cốt lõi
       <div class="row g-0 bg-light my-5 rounded-4 overflow-hidden align-items-center">
           <div class="col-md-6"><img src="https://picsum.photos/800/600?random=35" class="img-fluid"></div>
           <div class="col-md-6 p-5">
@@ -74,10 +89,10 @@
               <p class="text-muted">Mỗi sản phẩm bạn mua tại NEXVIBE sẽ góp một phần vào quỹ hỗ trợ trẻ em vùng cao có một mùa đông ấm áp hơn.</p>
               <button class="btn btn-dark">TÌM HIỂU THÊM</button>
           </div>
-      </div>
+      </div> -->
 
       <!-- 8. Khối Ưu đãi thành viên -->
-      <h2 class="text-center mb-4 fw-bold">ĐẶC QUYỀN THÀNH VIÊN NEXCLUB</h2>
+      <h2 class="text-center m-5 fw-bold">ĐẶC QUYỀN THÀNH VIÊN NEXCLUB</h2>
       <div class="row g-4 text-center">
           <div class="col-md-4"><div class="p-4 bg-primary-subtle rounded-4"><h4>Hoàn tiền đến 10%</h4><p>Tích lũy NexCoin cho mọi đơn hàng.</p></div></div>
           <div class="col-md-4"><div class="p-4 bg-primary-subtle rounded-4"><h4>Quà tặng sinh nhật</h4><p>Nhận ngay voucher đặc biệt trong tháng sinh nhật.</p></div></div>
@@ -100,8 +115,11 @@ const heroBanners = ref([
     { id: 4,  imageUrl: '/img/banner/b3.jpg' },
 ]);
 const categories = ref([
-    { name: 'Áo thun', iconUrl: '/img/icons/tshirt.svg' }, { name: 'Áo Polo', iconUrl: '/img/icons/polo.svg' }, { name: 'Quần Short', iconUrl: '/img/icons/shorts.svg' },
-    { name: 'Quần Lót', iconUrl: '/img/icons/underwear.svg' }, { name: 'Đồ Bơi', iconUrl: '/img/icons/swim.svg' }, { name: 'Phụ kiện', iconUrl: '/img/icons/accessory.svg' },
+    { name: 'Bóng đá', iconUrl: '/img/banner/b9.jpg'}, 
+    { name: 'Cầu lông', iconUrl: '/img/banner/b10.jpg' },
+    { name: 'Chạy bộ', iconUrl: '/img/banner/b8.jpg' },
+    { name: 'Pickleball', iconUrl: '/img/banner/b7.jpg' },
+    { name: 'Tập gym', iconUrl: '/img/banner/b6.jpg' },
 ]);
 const products = ref([
     { id: 1, name: 'Áo Thun Năng Động', price: 350000, slug: 'ao-thun-nang-dong', imageUrl: 'https://picsum.photos/400/400?random=10' },

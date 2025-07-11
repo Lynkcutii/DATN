@@ -46,7 +46,7 @@
             <li class="breadcrumb-item active" aria-current="page">Sản phẩm</li>
           </ol>
         </nav>
-        <h1 class="fw-bolder">Đồ Nam</h1>
+     
 
         <!-- Khu vực sắp xếp -->
         <div class="d-flex justify-content-between align-items-center mb-4">
