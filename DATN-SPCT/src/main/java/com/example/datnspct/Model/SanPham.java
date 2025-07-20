@@ -1,0 +1,36 @@
+package com.example.datnspct.Model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.List;
+
+@Entity
+@Table(name = "SanPham")
+@Getter
+@Setter
+public class SanPham {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IdSP")
+    private Integer id;
+
+    @Column(name = "MaSP")
+    private String maSP;
+
+    @Column(name = "TenSP")
+    private String tenSP;
+
+    @Column(name = "TrangThai")
+    private Boolean trangThai;
+
+    @ManyToOne
+    @JoinColumn(name = "IdDM")
+    private DanhMuc danhMuc;
+
+    @OneToMany(mappedBy = "sanPham", fetch = FetchType.LAZY)
+    @JsonIgnore // Ngăn serialize danh sách SanPhamChiTiet
+    private List<SanPhamChiTiet> sanPhamChiTiets;
+}
